@@ -1,4 +1,4 @@
-var Base64={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZLbA6efghHjklmMapqrstuvwxyzT12345d789+/="
+var Base64={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZlbA6efghHjkLmMapqrstuvwxyzT12345d789+/="
 
 ,encode:
 	function(kata){
@@ -96,18 +96,10 @@ var Base64={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZLbA6efghHjklmMapqrstuvwxyzT12345d78
 	}
 }
 
-var encode=document.getElementById('encode'),decode=document.getElementById('decode'),output=document.getElementById('output'),kata=document.getElementById('kata');
-var User_ID="";
 var protected_links="";
 var a_to_va=0;
-var a_to_vb=0;
-var a_to_vc="";
 
 function auto_safelink(){
-	auto_safeconvert();
-}
-
-function auto_safeconvert(){
 	var a_to_vd=window.location.hostname;
 	if(protected_links!=""&&!protected_links.match(a_to_vd)){
 		protected_links+=", "+ a_to_vd;
@@ -140,18 +132,7 @@ function auto_safeconvert(){
 			var enkripsi=Base64.encode(linkaktif);
 			a_to_ve[i].href="http://r.gtaind.com/?"+ enkripsi;
 			a_to_ve[i].rel="nofollow";
-			a_to_vb++;
-			a_to_vc+=i+":::"+ a_to_ve[i].href+"\n";
 		}
-	}
-
-	var a_to_vj=document.getElementById("anonyminized");
-	var a_to_vk=document.getElementById("found_links");
-	if(a_to_vj){
-		a_to_vj.innerHTML+=a_to_vb;
-	}
-	if(a_to_vk){
-		a_to_vk.innerHTML+=a_to_va;
 	}
 }
 
