@@ -100,6 +100,10 @@ var protected_links="";
 var a_to_va=0;
 
 function auto_safelink(){
+	enkripsi_mulai();
+}
+
+function enkripsi_mulai(){
 	var a_to_vd=window.location.hostname;
 	if(protected_links!=""&&!protected_links.match(a_to_vd)){
 		protected_links+=", "+ a_to_vd;
