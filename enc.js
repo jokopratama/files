@@ -1,4 +1,4 @@
-var Base64={kunci:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+var Base64={kunci:"RBCdEFaTIJKLMNOPQASHUVWXYZGbnDefgh0jklmcopqrstuvwxyzi123456789+/="
 
 ,encode:
 	function(kata){
