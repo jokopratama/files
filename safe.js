@@ -1,5 +1,142 @@
-var Base64={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZlbA6efghHjkLmMapqrstuvwxyzT12345d789+/=",encode:function(a){var d="",c,b,g,e,f,h,k=0;for(a=Base64.masukan(a);k<a.length;)c=a.charCodeAt(k++),b=a.charCodeAt(k++),g=a.charCodeAt(k++),e=c>>2,c=(c&3)<<4|b>>4,f=(b&15)<<2|g>>6,h=g&63,isNaN(b)?f=h=64:isNaN(g)&&(h=64),d=d+this.kunci.charAt(e)+this.kunci.charAt(c)+this.kunci.charAt(f)+this.kunci.charAt(h);return d},decode:function(a){var d="",c,b,g,e,f,h=0;for(a=a.replace(/[^A-Za-z0-9\+\/\=]/g,"");h<a.length;)c=
-this.kunci.indexOf(a.charAt(h++)),b=this.kunci.indexOf(a.charAt(h++)),e=this.kunci.indexOf(a.charAt(h++)),f=this.kunci.indexOf(a.charAt(h++)),c=c<<2|b>>4,b=(b&15)<<4|e>>2,g=(e&3)<<6|f,d+=String.fromCharCode(c),64!=e&&(d+=String.fromCharCode(b)),64!=f&&(d+=String.fromCharCode(g));return d=Base64.keluarkan(d)},masukan:function(a){a=a.replace(/\r\n/g,"\n");for(var d="",c=0;c<a.length;c++){var b=a.charCodeAt(c);128>b?d+=String.fromCharCode(b):(127<b&&2048>b?d+=String.fromCharCode(b>>6|192):(d+=String.fromCharCode(b>>
-12|224),d+=String.fromCharCode(b>>6&63|128)),d+=String.fromCharCode(b&63|128))}return d},keluarkan:function(a){var d="",c=0,b;for(c1=c2=0;c<a.length;)b=a.charCodeAt(c),128>b?(d+=String.fromCharCode(b),c++):191<b&&224>b?(c2=a.charCodeAt(c+1),d+=String.fromCharCode((b&31)<<6|c2&63),c+=2):(c2=a.charCodeAt(c+1),c3=a.charCodeAt(c+2),d+=String.fromCharCode((b&15)<<12|(c2&63)<<6|c3&63),c+=3);return d}},protected_links="",panjangLink=0;
-function enkripsi_mulai(){var a=window.location.hostname;""==protected_links||protected_links.match(a)?""==protected_links&&(protected_links=a):protected_links+=", "+a;var d,c,a=document.getElementsByTagName("a");panjangLink=a.length;d=rapiinList();c=d.length;for(var b,g,e="",f=0;f<panjangLink;f++){b=!1;for(g=0;0==b&&g<c;)e=a[f].href,!e.match(d[g])&&e&&e.match("http")||(b=!0),g++;0==b&&(b=Base64.encode(e),a[f].href="http://r.gtaind.com/?"+b,a[f].rel="nofollow")}}
-function rapiinList(){protected_links=protected_links.replace(" ","");return protected_links.split(",")};
+var naufal={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZlbA6efghHjkLmMapqrstuvwxyzT12345d789+/="
+
+,encode:
+	function(kata){
+		var output="";
+		var letak1,letak2,letak3,kode1,kode2,kode3,kode4;
+		var i=0;
+		kata=naufal.masukan(kata);
+		while(i<kata.length){
+			letak1=kata.charCodeAt(i++);
+			letak2=kata.charCodeAt(i++);
+			letak3=kata.charCodeAt(i++);
+			kode1=letak1>>2;
+			kode2=((letak1&3)<<4)|(letak2>>4);
+			kode3=((letak2&15)<<2)|(letak3>>6);
+			kode4=letak3&63;
+			if(isNaN(letak2)){
+				kode3=kode4=64;
+			}else if(isNaN(letak3)){
+				kode4=64;
+			}
+			output=output+ this.kunci.charAt(kode1)+ this.kunci.charAt(kode2)+ this.kunci.charAt(kode3)+ this.kunci.charAt(kode4);
+		}
+	return output;
+	}
+	
+,decode:
+	function(kata){
+		var output="";
+		var letak1,letak2,letak3,kode1,kode2,kode3,kode4;
+		var i=0;
+		kata=kata.replace(/[^A-Za-z0-9\+\/\=]/g,"");
+		while(i<kata.length){
+			kode1=this.kunci.indexOf(kata.charAt(i++));
+			kode2=this.kunci.indexOf(kata.charAt(i++));
+			kode3=this.kunci.indexOf(kata.charAt(i++));
+			kode4=this.kunci.indexOf(kata.charAt(i++));
+			letak1=(kode1<<2)|(kode2>>4);
+			letak2=((kode2&15)<<4)|(kode3>>2);
+			letak3=((kode3&3)<<6)|kode4;
+			output=output+ String.fromCharCode(letak1);
+			if(kode3!=64){
+				output=output+ String.fromCharCode(letak2);
+			}
+			if(kode4!=64){
+				output=output+ String.fromCharCode(letak3);
+			}
+		}
+		output=naufal.keluarkan(output);
+		return output;
+	}
+
+,masukan:
+	function(string){
+		string=string.replace(/\r\n/g,"\n");
+		var utftext="";
+		for(var n=0;n<string.length;n++){
+			var c=string.charCodeAt(n);
+			if(c<128){
+				utftext+=String.fromCharCode(c);
+			}else if((c>127)&&(c<2048)){
+				utftext+=String.fromCharCode((c>>6)|192);
+				utftext+=String.fromCharCode((c&63)|128);
+			}else{
+				utftext+=String.fromCharCode((c>>12)|224);
+				utftext+=String.fromCharCode(((c>>6)&63)|128);
+				utftext+=String.fromCharCode((c&63)|128);
+			}
+		}
+		return utftext;
+	}
+
+,keluarkan:
+	function(utftext){
+		var string="";
+		var i=0;
+		var c=c1=c2=0;
+		while(i<utftext.length){
+			c=utftext.charCodeAt(i);
+			if(c<128){
+				string+=String.fromCharCode(c);
+				i++;
+			}else if((c>191)&&(c<224)){
+				c2=utftext.charCodeAt(i+ 1);
+				string+=String.fromCharCode(((c&31)<<6)|(c2&63));
+				i+=2;
+			}else{
+				c2=utftext.charCodeAt(i+ 1);
+				c3=utftext.charCodeAt(i+ 2);
+				string+=String.fromCharCode(((c&15)<<12)|((c2&63)<<6)|(c3&63));
+				i+=3;
+			}
+		}
+		return string;
+	}
+}
+
+var protected_links="";
+var panjangLink=0;
+
+function enkripsi_mulai(){
+	var domain=window.location.hostname;
+	if(protected_links!=""&&!protected_links.match(domain)){
+		protected_links+=", "+ domain;
+	}else if(protected_links==""){
+		protected_links=domain;
+	}
+	
+	var LinkAktif="";
+	var LinkBebas=new Array();
+	var panjang=0;
+	LinkAktif=document.getElementsByTagName("a");
+	panjangLink=LinkAktif.length;
+	LinkBebas=rapiinList();
+	panjang=LinkBebas.length;
+	var Tanda=false;
+	var j=0;
+	var link="";
+
+	for(var i=0;i<panjangLink;i++){
+		Tanda=false;
+		j=0;
+		while(Tanda==false&&j<panjang){
+			link=LinkAktif[i].href;
+			if(link.match(LinkBebas[j])||!link||!link.match("http")){
+				Tanda=true;
+			}
+			j++;
+		}
+		if(Tanda==false){
+			var enkripsi=naufal.encode(link);
+			LinkAktif[i].href="http://r.gtaind.com/?"+ enkripsi;
+			LinkAktif[i].rel="nofollow";
+		}
+	}
+}
+
+function rapiinList(){
+	var LinkBebas=new Array();
+	protected_links=protected_links.replace(" ","");
+	LinkBebas=protected_links.split(",");
+	return LinkBebas;}
