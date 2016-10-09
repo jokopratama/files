@@ -1,5 +1,5 @@
 var Base64={kunci:"cBCDEFRiIJKonNOPQGS0UVWXYZ+bA6efghHjklmMLpqrstuvwxyzT12345d789a/="
-Dov
+
 ,encode:
 	function(kata){
 		var output="";
