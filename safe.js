@@ -27,8 +27,7 @@ var Base64={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZlbA6efghHjkLmMapqrstuvwxyzT12345d78
 ,decode:
 	function(kata){
 		var output="";
-		var letak1,letak2,letak3;
-		var kode1,kode2,kode3,kode4;
+		var letak1,letak2,letak3,kode1,kode2,kode3,kode4;
 		var i=0;
 		kata=kata.replace(/[^A-Za-z0-9\+\/\=]/g,"");
 		while(i<kata.length){
@@ -97,51 +96,47 @@ var Base64={kunci:"cBCoEFRiIJKDnNOPQGS0UVWXYZlbA6efghHjkLmMapqrstuvwxyzT12345d78
 }
 
 var protected_links="";
-var a_to_va=0;
-
-function auto_safelink(){
-	enkripsi_mulai();
-}
+var panjangLink=0;
 
 function enkripsi_mulai(){
-	var a_to_vd=window.location.hostname;
-	if(protected_links!=""&&!protected_links.match(a_to_vd)){
-		protected_links+=", "+ a_to_vd;
+	var domain=window.location.hostname;
+	if(protected_links!=""&&!protected_links.match(domain)){
+		protected_links+=", "+ domain;
 	}else if(protected_links==""){
-		protected_links=a_to_vd;
+		protected_links=domain;
 	}
 	
-	var a_to_ve="";
-	var a_to_vf=new Array();
-	var a_to_vg=0;
-	a_to_ve=document.getElementsByTagName("a");
-	a_to_va=a_to_ve.length;
-	a_to_vf=a_to_fa();
-	a_to_vg=a_to_vf.length;
-	var a_to_vh=false;
+	var LinkAktif="";
+	var LinkBebas=new Array();
+	var panjang=0;
+	LinkAktif=document.getElementsByTagName("a");
+	panjangLink=LinkAktif.length;
+	LinkBebas=rapiinList();
+	panjang=LinkBebas.length;
+	var Tanda=false;
 	var j=0;
-	var linkaktif="";
+	var link="";
 
-	for(var i=0;i<a_to_va;i++){
-		a_to_vh=false;
+	for(var i=0;i<panjangLink;i++){
+		Tanda=false;
 		j=0;
-		while(a_to_vh==false&&j<a_to_vg){
-			linkaktif=a_to_ve[i].href;
-			if(linkaktif.match(a_to_vf[j])||!linkaktif||!linkaktif.match("http")){
-				a_to_vh=true;
+		while(Tanda==false&&j<panjang){
+			link=LinkAktif[i].href;
+			if(link.match(LinkBebas[j])||!link||!link.match("http")){
+				Tanda=true;
 			}
 			j++;
 		}
-		if(a_to_vh==false){
-			var enkripsi=Base64.encode(linkaktif);
-			a_to_ve[i].href="http://r.gtaind.com/?"+ enkripsi;
-			a_to_ve[i].rel="nofollow";
+		if(Tanda==false){
+			var enkripsi=Base64.encode(link);
+			LinkAktif[i].href="http://r.gtaind.com/?"+ enkripsi;
+			LinkAktif[i].rel="nofollow";
 		}
 	}
 }
 
-function a_to_fa(){
-	var a_to_vf=new Array();
+function rapiinList(){
+	var LinkBebas=new Array();
 	protected_links=protected_links.replace(" ","");
-	a_to_vf=protected_links.split(",");
-	return a_to_vf;}
+	LinkBebas=protected_links.split(",");
+	return LinkBebas;}
