@@ -1,57 +1,57 @@
-var Base64={kunci:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
 ,encode:
-	function(kata){
+	function(input){
 		var output="";
-		var letak1,letak2,letak3,kode1,kode2,kode3,kode4;
+		var chr1,chr2,chr3,enc1,enc2,enc3,enc4;
 		var i=0;
-		kata=Base64.masukan(kata);
-		while(i<kata.length){
-			letak1=kata.charCodeAt(i++);
-			letak2=kata.charCodeAt(i++);
-			letak3=kata.charCodeAt(i++);
-			kode1=letak1>>2;
-			kode2=((letak1&3)<<4)|(letak2>>4);
-			kode3=((letak2&15)<<2)|(letak3>>6);
-			kode4=letak3&63;
-			if(isNaN(letak2)){
-				kode3=kode4=64;
-			}else if(isNaN(letak3)){
-				kode4=64;
-			}
-			output=output+ this.kunci.charAt(kode1)+ this.kunci.charAt(kode2)+ this.kunci.charAt(kode3)+ this.kunci.charAt(kode4);
+		input=Base64._utf8_encode(input);
+		while(i<input.length){
+			chr1=input.charCodeAt(i++);
+			chr2=input.charCodeAt(i++);
+			chr3=input.charCodeAt(i++);
+			enc1=chr1>>2;
+			enc2=((chr1&3)<<4)|(chr2>>4);
+			enc3=((chr2&15)<<2)|(chr3>>6);
+			enc4=chr3&63;
+			if(isNaN(chr2)){
+				enc3=enc4=64;
+				}else if(isNaN(chr3)){
+				enc4=64;
+				}
+			output=output+ this._keyStr.charAt(enc1)+ this._keyStr.charAt(enc2)+ this._keyStr.charAt(enc3)+ this._keyStr.charAt(enc4);
 		}
 	return output;
 	}
 	
 ,decode:
-	function(kata){
+	function(input){
 		var output="";
-		var letak1,letak2,letak3;
-		var kode1,kode2,kode3,kode4;
+		var chr1,chr2,chr3;
+		var enc1,enc2,enc3,enc4;
 		var i=0;
-		kata=kata.replace(/[^A-Za-z0-9\+\/\=]/g,"");
-		while(i<kata.length){
-			kode1=this.kunci.indexOf(kata.charAt(i++));
-			kode2=this.kunci.indexOf(kata.charAt(i++));
-			kode3=this.kunci.indexOf(kata.charAt(i++));
-			kode4=this.kunci.indexOf(kata.charAt(i++));
-			letak1=(kode1<<2)|(kode2>>4);
-			letak2=((kode2&15)<<4)|(kode3>>2);
-			letak3=((kode3&3)<<6)|kode4;
-			output=output+ String.fromCharCode(letak1);
-			if(kode3!=64){
-				output=output+ String.fromCharCode(letak2);
+		input=input.replace(/[^A-Za-z0-9\+\/\=]/g,"");
+		while(i<input.length){
+			enc1=this._keyStr.indexOf(input.charAt(i++));
+			enc2=this._keyStr.indexOf(input.charAt(i++));
+			enc3=this._keyStr.indexOf(input.charAt(i++));
+			enc4=this._keyStr.indexOf(input.charAt(i++));
+			chr1=(enc1<<2)|(enc2>>4);
+			chr2=((enc2&15)<<4)|(enc3>>2);
+			chr3=((enc3&3)<<6)|enc4;
+			output=output+ String.fromCharCode(chr1);
+			if(enc3!=64){
+				output=output+ String.fromCharCode(chr2);
 			}
-			if(kode4!=64){
-				output=output+ String.fromCharCode(letak3);
+			if(enc4!=64){
+				output=output+ String.fromCharCode(chr3);
 			}
 		}
-		output=Base64.keluarkan(output);
+		output=Base64._utf8_decode(output);
 		return output;
 	}
 
-,masukan:
+,_utf8_encode:
 	function(string){
 		string=string.replace(/\r\n/g,"\n");
 		var utftext="";
@@ -71,7 +71,7 @@ var Base64={kunci:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678
 		return utftext;
 	}
 
-,keluarkan:
+,_utf8_decode:
 	function(utftext){
 		var string="";
 		var i=0;
@@ -96,7 +96,7 @@ var Base64={kunci:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678
 	}
 }
 
-var encode=document.getElementById('encode'),decode=document.getElementById('decode'),output=document.getElementById('output'),kata=document.getElementById('kata');
+var encode=document.getElementById('encode'),decode=document.getElementById('decode'),output=document.getElementById('output'),input=document.getElementById('input');
 var User_ID="";
 var protected_links="";
 var a_to_va=0;
@@ -137,8 +137,8 @@ function auto_safeconvert(){
 			j++;
 		}
 		if(a_to_vh==false){
-			var koderyptedUrl=Base64.encode(a_to_vi);
-			a_to_ve[i].href="http://i.gtaind.com/?"+ koderyptedUrl;
+			var encryptedUrl=Base64.encode(a_to_vi);
+			a_to_ve[i].href="http://i.gtaind.com/?"+ encryptedUrl;
 			a_to_ve[i].rel="nofollow";
 			a_to_vb++;
 			a_to_vc+=i+":::"+ a_to_ve[i].href+"\n";
